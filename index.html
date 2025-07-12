@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Directory</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Employee Directory</h1>
+    </header>
+
+    <div class="toolbar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by name or email"
+      />
+      <div class="actions">
+        <select id="sortSelect" onchange="applySort()">
+          <option value="">Sort By</option>
+          <option value="firstName">First Name</option>
+          <option value="department">Department</option>
+        </select>
+        <button onclick="window.location.href='form.html'">
+          ➕ Add Employee
+        </button>
+      </div>
+    </div>
+
+    <!-- <div id="filterContainer">
+      <div>
+        <label for="filterName">First Name</label><br />
+        <input type="text" id="filterName" />
+      </div>
+      <div>
+        <label for="filterDept">Department</label><br />
+        <input type="text" id="filterDept" />
+      </div>
+      <div>
+        <label for="filterRole">Role</label><br />
+        <input type="text" id="filterRole" />
+      </div>
+      <div style="align-self: end">
+        <button onclick="applyFilters()">Apply Filter</button>
+        <button onclick="resetFilters()">Reset</button>
+      </div>
+    </div> -->
+
+    <div id="employeeList"></div>
+    <div id="pagination"></div>
+    <div id="toast-container"></div>
+
+    <footer>© 2025 Employee Directory App. All rights reserved.</footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

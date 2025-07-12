@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add/Edit Employee</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.6);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+      }
+      .modal-content {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      .modal-content h2 {
+        margin-top: 0;
+        color: #4f46e5;
+      }
+      .modal-content input,
+      .modal-content button {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+      .modal-content button {
+        background-color: #4f46e5;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .modal-content a {
+        text-align: center;
+        display: block;
+        margin-top: 10px;
+        color: #777;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="modal">
+      <div class="modal-content">
+        <h2>Add / Edit Employee</h2>
+        <form id="employeeForm">
+          <input type="hidden" id="empId" />
+          <input type="text" id="firstName" placeholder="First Name" required />
+          <input type="text" id="lastName" placeholder="Last Name" required />
+          <input type="email" id="email" placeholder="Email" required />
+          <input
+            type="text"
+            id="department"
+            placeholder="Department"
+            required
+          />
+          <input type="text" id="role" placeholder="Role" required />
+          <button type="submit">Save</button>
+          <a href="index.html">Cancel</a>
+        </form>
+      </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const empId = urlParams.get("id");
+      const isEdit = !!empId;
+
+      if (!localStorage.getItem("employees")) {
+        localStorage.setItem("employees", JSON.stringify(mockEmployees));
+      } else {
+        mockEmployees = JSON.parse(localStorage.getItem("employees"));
+      }
+
+      if (isEdit) {
+        const employee = mockEmployees.find((e) => e.id === parseInt(empId));
+        if (employee) {
+          document.getElementById("empId").value = employee.id;
+          document.getElementById("firstName").value = employee.firstName;
+          document.getElementById("lastName").value = employee.lastName;
+          document.getElementById("email").value = employee.email;
+          document.getElementById("department").value = employee.department;
+          document.getElementById("role").value = employee.role;
+        }
+      }
+
+      document
+        .getElementById("employeeForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const newEmp = {
+            id: isEdit ? parseInt(empId) : Date.now(),
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: document.getElementById("email").value,
+            department: document.getElementById("department").value,
+            role: document.getElementById("role").value,
+          };
+
+          if (isEdit) {
+            const index = mockEmployees.findIndex(
+              (e) => e.id === parseInt(empId)
+            );
+            if (index !== -1) mockEmployees[index] = newEmp;
+          } else {
+            mockEmployees.push(newEmp);
+          }
+
+          localStorage.setItem("employees", JSON.stringify(mockEmployees));
+          window.location.href = "index.html";
+          showToast("Employee Added Successfully");
+        });
+    </script>
+  </body>
+</html>
